@@ -134,7 +134,7 @@
             }
         }
 
-        /* ---------- 3-PHOTO GALLERY ---------- */
+        /* ---------- 3-PHOTO GALLERY (1 wide on top, 2 on bottom) ---------- */
         .gallery {
             position: fixed;
             inset: 0;
@@ -160,16 +160,19 @@
             visibility: visible;
         }
 
+        /* first photo: spans both columns on the top row */
         .gallery .photo:nth-child(1) {
             grid-column: 1 / span 2;
             grid-row: 1;
         }
 
+        /* second photo: bottom-left */
         .gallery .photo:nth-child(2) {
             grid-column: 1;
             grid-row: 2;
         }
 
+        /* third photo: bottom-right */
         .gallery .photo:nth-child(3) {
             grid-column: 2;
             grid-row: 2;
@@ -500,6 +503,7 @@
                 transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s;
         }
 
+        /* photos: shortened from 52% to 42% so the note has more room */
         .env-photos {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -546,19 +550,10 @@
             }
         }
 
-        /* Wrapper for the note — enables fade gradient + scroll hint overlay */
-        .env-note-wrap {
-            position: relative;
-            flex: 1 1 auto;
-            min-height: 0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        /* PERSONAL NOTE — smooth scrollable */
+        /* PERSONAL NOTE — now scrollable inside, gesture not hijacked */
         .env-note {
-            height: 100%;
-            padding: 12px 14px 34px 14px;  /* extra bottom padding so the last line isn't hidden behind the hint */
+            flex: 1 1 auto;
+            padding: 12px 14px;
             border-radius: 10px;
             background: rgba(255, 235, 245, 0.95);
             box-shadow:
@@ -568,92 +563,24 @@
             font-family: 'Georgia', serif;
             font-style: italic;
             font-size: 0.72rem;
-            line-height: 1.45;
+            line-height: 1.4;
             text-align: center;
             letter-spacing: 0.3px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
             white-space: pre-line;
-            scroll-behavior: smooth;
         }
 
-        /* subtle scrollbar */
         .env-note::-webkit-scrollbar {
             width: 3px;
         }
         .env-note::-webkit-scrollbar-thumb {
-            background: rgba(160, 0, 48, 0.35);
+            background: rgba(160, 0, 48, 0.3);
             border-radius: 3px;
         }
         .env-note::-webkit-scrollbar-track {
             background: transparent;
-        }
-
-        /* fade gradient at the bottom of the note — "there's more below" cue */
-        .env-note-wrap::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 36px;
-            background: linear-gradient(to bottom,
-                rgba(255, 235, 245, 0) 0%,
-                rgba(255, 235, 245, 0.85) 60%,
-                rgba(255, 235, 245, 1) 100%);
-            border-radius: 0 0 10px 10px;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-
-        /* when the user reaches the bottom, fade the gradient away */
-        .env-note-wrap.at-bottom::after {
-            opacity: 0;
-        }
-
-        /* "scroll for more" hint pill */
-        .env-scroll-hint {
-            position: absolute;
-            left: 50%;
-            bottom: 8px;
-            transform: translateX(-50%);
-            z-index: 4;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: rgba(160, 0, 48, 0.85);
-            color: #fff0f5;
-            font-family: -apple-system, 'Georgia', serif;
-            font-size: 0.62rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-weight: 600;
-            white-space: nowrap;
-            box-shadow:
-                0 4px 12px rgba(160, 0, 48, 0.5),
-                0 0 0 1px rgba(255, 180, 210, 0.5) inset;
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            pointer-events: none;
-            animation: scrollBounce 1.8s infinite ease-in-out;
-        }
-
-        /* show the hint 1.2s after the envelope opens */
-        .envelope-wrap.open .env-scroll-hint {
-            opacity: 1;
-            transition-delay: 1.2s;
-        }
-
-        /* hide it as soon as she starts scrolling */
-        .env-scroll-hint.hide {
-            opacity: 0 !important;
-            animation: none !important;
-            transition: opacity 0.3s ease;
-        }
-
-        @keyframes scrollBounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50%      { transform: translateX(-50%) translateY(3px); }
         }
 
         .env-note .signature {
@@ -718,12 +645,7 @@
 
             .env-note {
                 font-size: 0.66rem;
-                padding: 10px 12px 32px 12px;
-            }
-
-            .env-scroll-hint {
-                font-size: 0.58rem;
-                padding: 3px 10px;
+                padding: 10px 12px;
             }
         }
 
@@ -732,8 +654,7 @@
             .photo::after,
             .envelope-hint,
             .env-photo::after,
-            .notif-icon,
-            .env-scroll-hint {
+            .notif-icon {
                 animation: none;
             }
         }
@@ -777,33 +698,26 @@
                     <div class="env-photo"><img src="her2.jpg" alt=""></div>
                 </div>
 
-                <!-- note wrapper — enables gradient + scroll hint -->
-                <div class="env-note-wrap" id="noteWrap">
+                <!-- =============================================
+           PERSONAL NOTE — YOUR MESSAGE UNTOUCHED
+           ============================================= -->
+                <div class="env-note">
+                    Happy birthday, my dear Yuthi 💝
 
-                    <!-- =============================================
-                         PERSONAL NOTE — YOUR MESSAGE UNTOUCHED
-                         ============================================= -->
-                    <div class="env-note" id="noteScroll">
-                        Happy birthday, my dear Yuthi 💝
+                    i hope you have an amazing day and great years ahead of you. Thank you for being who you are.But I
+                    hope you realize very soon how much important you are not only to me, but everyone around you.
 
-                        i hope you have an amazing day and great years ahead of you. Thank you for being who you are.But I
-                        hope you realize very soon how much important you are not only to me, but everyone around you.
+                    I hope that the coming days,months and years be softer and happier filled with fun memories for you.
+                    And when the times get tough, I hope you find the strength within yourself to overcome every
+                    obstacle with courage and determination.
 
-                        I hope that the coming days,months and years be softer and happier filled with fun memories for you.
-                        And when the times get tough, I hope you find the strength within yourself to overcome every
-                        obstacle with courage and determination.
+                    My love and support will always be by your side, even if you decide not to keep me by your side 😝😝
+                    anyways....
 
-                        My love and support will always be by your side, even if you decide not to keep me by your side 😝😝
-                        anyways....
-
-                        Happy Birthday, My precious Yuthi🫂
-                        <span class="signature">— With all my love ❤️</span>
-                    </div>
-                    <!-- ============================================= -->
-
-                    <!-- "scroll for more" hint pill -->
-                    <div class="env-scroll-hint" id="scrollHint">Scroll for more ↓</div>
+                    Happy Birthday, My precious Yuthi🫂
+                    <span class="signature">— With all my love ❤️</span>
                 </div>
+                <!-- ============================================= -->
             </div>
 
             <div class="env-body"></div>
@@ -1057,9 +971,6 @@
             const envelope = document.getElementById('envelope');
             const notifBanner = document.getElementById('notifBanner');
             const hintText = document.getElementById('hintText');
-            const noteScroll = document.getElementById('noteScroll');
-            const noteWrap = document.getElementById('noteWrap');
-            const scrollHint = document.getElementById('scrollHint');
 
             function showBigText(text, opts) {
                 return new Promise(resolve => {
@@ -1086,27 +997,33 @@
             const wait = ms => new Promise(r => setTimeout(r, ms));
 
             async function runSequence() {
+                // Countdown
                 await showBigText('3', { holdMs: 900 });
                 await showBigText('2', { holdMs: 900 });
                 await showBigText('1', { holdMs: 900 });
 
+                // Heart burst
                 launchHeartBurst();
                 await wait(700);
 
+                // HAPPY BIRTHDAY TO YOU
                 await showBigText('HAPPY', { holdMs: 850, isWord: true });
                 await wait(120);
                 await showBigText('BIRTHDAY', { holdMs: 950, isWord: true });
                 await wait(120);
                 await showBigText('TO YOU', { holdMs: 1000, isWord: true });
 
+                // 3-photo gallery (5 seconds)
                 galleryEl.classList.add('active');
                 await wait(5000);
                 galleryEl.classList.remove('active');
                 await wait(900);
 
+                // Notification banner appears
                 notifBanner.classList.add('show');
                 await wait(1400);
 
+                // Envelope scene appears
                 envelopeScene.classList.add('active');
             }
 
@@ -1135,8 +1052,8 @@
 
             envelopeScene.addEventListener('touchmove', (e) => {
                 if (touchStartY == null || opened) return;
-                // if the touch started on the note, let the note scroll instead
-                if (e.target.closest && e.target.closest('.env-note-wrap')) return;
+                // if the touch started inside the note, let the note scroll instead
+                if (e.target.closest && e.target.closest('.env-note')) return;
                 const dy = touchStartY - e.touches[0].clientY;
                 if (dy > 40) {
                     openEnvelope();
@@ -1145,36 +1062,6 @@
             }, { passive: true });
 
             envelopeScene.addEventListener('touchend', () => { touchStartY = null; }, { passive: true });
-
-            // ============================================================
-            // NOTE SCROLL — hide "scroll for more" hint on first scroll,
-            //                fade gradient at bottom when reaching the end
-            // ============================================================
-            let scrollHintDismissed = false;
-
-            noteScroll.addEventListener('scroll', () => {
-                // dismiss the hint as soon as she scrolls even a little
-                if (!scrollHintDismissed && noteScroll.scrollTop > 10) {
-                    scrollHintDismissed = true;
-                    scrollHint.classList.add('hide');
-                }
-
-                // hide the bottom gradient when she reaches the bottom
-                const atBottom = noteScroll.scrollTop + noteScroll.clientHeight >= noteScroll.scrollHeight - 4;
-                if (atBottom) {
-                    noteWrap.classList.add('at-bottom');
-                } else {
-                    noteWrap.classList.remove('at-bottom');
-                }
-            }, { passive: true });
-
-            // Also dismiss the hint on touch (in case scroll event doesn't fire instantly on iOS)
-            noteScroll.addEventListener('touchstart', () => {
-                if (!scrollHintDismissed) {
-                    scrollHintDismissed = true;
-                    scrollHint.classList.add('hide');
-                }
-            }, { passive: true });
         })();
     </script>
 </body>
